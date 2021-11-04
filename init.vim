@@ -7,6 +7,7 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
+Plug 'mhinz/vim-startify'
 
 Plug 'tpope/vim-commentary'
 " Plug 'scrooloose/nerdcommenter'
@@ -15,6 +16,7 @@ Plug 'tpope/vim-commentary'
 Plug 'christoomey/vim-tmux-navigator'
 
 Plug 'morhetz/gruvbox'
+Plug 'dracula/vim'
 
 Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
 Plug '907th/vim-auto-save'
@@ -24,30 +26,77 @@ set mouse=a " enable mouse
 set encoding=utf-8
 set relativenumber
 set number
+set clipboard=unnamedplus  " using system clipboard filetype plugin on
+set cursorline
+set noswapfile            " disable creating swap file
+set backupdir=~/.cache/nvim " Directory to store backup files.
 
 set smarttab
-set cindent
+set smartindent
 set softtabstop=2
 set tabstop=2
 set shiftwidth=2
 " always uses spaces instead of tab characters
 set expandtab
-"
+
 " fast exit from Insert mode 
 inoremap jk <ESC>
-"
+inoremap kj <ESC>
+
+
 " j/k will move virtual lines (lines that wrap)
 noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
 noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
 
+syntax enable
 colorscheme gruvbox
+" colorscheme dracula
 
+" turn off search highlight
+nnoremap ,<space> :nohlsearch<CR>
+
+nmap ,x :x<CR>
+
+" map ,tn :tabnew<cr>
+" map ,to :tabonly<cr>
+" map ,tc :tabclose<cr>
+" map ,tm :tabmove 
+
+map ,e :tabedit <C-r>=expand("%:p:h")<cr>/
+
+" open file in a text by placing text and gf
+nnoremap gf :vert winc f<cr>
+
+" copies filepath to clipboard by pressing yf
+nnoremap <silent> yf :let @+=expand('%:p')<CR>
+" copies pwd to clipboard: command yd
+nnoremap <silent> yd :let @+=expand('%:p:h')<CR>
+
+" open new split panes to right and below
+set splitright
+set splitbelow
+
+" move line or visually selected block - alt+j/k
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
+
+" move split panes to left/bottom/top/right
+nnoremap <A-h> <C-W>H
+nnoremap <A-j> <C-W>J
+nnoremap <A-k> <C-W>K
+nnoremap <A-l> <C-W>L
+
+" move between panes to left/bottom/top/right
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+
+" Plugin: NERDTree
 nmap <C-n> :NERDTreeToggle<cr>
-
-" Plugin: scrooloose/nerdcommenter
-" vmap ++ <plug>NERDCommenterToggle
-" nmap ++ <plug>NERDCommenterToggle
-" let g:NERDSpaceDelims = 1
 
 " open NERDTree automatically
 " autocmd StdinReadPre * let s:std_in=1
@@ -67,21 +116,7 @@ let g:NERDTreeGitStatusWithFlags = 1
     "\ "Ignored"   : "#808080"   
     "\ }                         
 
-
 " let g:NERDTreeIgnore = ['^node_modules$']
-
-" vim-prettier
-"let g:prettier#quickfix_enabled = 0
-"let g:prettier#quickfix_auto_focus = 0
-" prettier command for coc
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-" run prettier on save
-"let g:prettier#autoformat = 0
-"autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
-
-
-" ctrlp
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " sync open file with NERDTree
 " " Check if NERDTree is open or active
@@ -101,6 +136,28 @@ endfunction
 " Highlight currently open buffer in NERDTree
 autocmd BufEnter * call SyncTree()
 
+
+" Plugin: scrooloose/nerdcommenter
+" vmap ++ <plug>NERDCommenterToggle
+" nmap ++ <plug>NERDCommenterToggle
+" let g:NERDSpaceDelims = 1
+
+
+" Plugin: vim-prettier
+"let g:prettier#quickfix_enabled = 0
+"let g:prettier#quickfix_auto_focus = 0
+" prettier command for coc
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" run prettier on save
+"let g:prettier#autoformat = 0
+"autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+
+
+" Plugin: ctrlp
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+
+
+" Plugin: coc.nvim
 " coc config
 let g:coc_global_extensions = [
   \ 'coc-snippets',
@@ -112,6 +169,7 @@ let g:coc_global_extensions = [
   \ 'coc-clangd',
   \ 'coc-pyright'
   \ ]
+
 " from readme
 " if hidden is not set, TextEdit might fail.
 set hidden " Some servers have issues with backup files, see #649 set nobackup set nowritebackup " Better display for messages set cmdheight=2 " You will have bad experience for diagnostic messages when it's default 4000.
@@ -233,26 +291,16 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space> p  :<C-u>CocListResume<CR>
 
-" Plugin: 907th/vim-auto-save
+
+" Plugin: vim-auto-save
 autocmd VimEnter * AutoSaveToggle
 
+" Vim jump to the last position when reopening a file
+au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | 
+
 autocmd FileType cpp map <buffer> <F5> :w<CR>:exec '!g++' shellescape(@%, 1) '-o .cpp.out && ./.cpp.out'<CR>
-autocmd FileType cpp imap <buffer> <F5> <esc>:w<CR>:exec '!g++' shellescape(@%, 1) '-o .cpp.out && ./.cpp.out'<CR>
-
-nmap ,x :x<cr>
-
-" map ,tn :tabnew<cr>
-" map ,to :tabonly<cr>
-" map ,tc :tabclose<cr>
-" map ,tm :tabmove 
-
-map ,e :tabedit <C-r>=expand("%:p:h")<cr>/
-
-" turn off search highlight
-nnoremap ,<space> :nohlsearch<CR>
 
 autocmd Filetype python call SetPythonOptions()
-
 function SetPythonOptions()
   set colorcolumn=79
   set softtabstop=4
@@ -260,5 +308,5 @@ function SetPythonOptions()
   set shiftwidth=4
 
   map <buffer> <F5> :w<CR>:exec '!python' shellescape(@%, 1)<CR>
-  imap <buffer> <F5> <esc>:w<CR>:exec '!python' shellescape(@%, 1)<CR>
+  imap <buffer> <F5> :w<CR>:exec '!python' shellescape(@%, 1)<CR>
 endfunction
