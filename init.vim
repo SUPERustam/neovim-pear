@@ -10,7 +10,6 @@ Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
 Plug 'mhinz/vim-startify'
 
 Plug 'tpope/vim-commentary'
-" Plug 'scrooloose/nerdcommenter'
 " Plug 'prettier/vim-pettier', { 'do': 'yarn install' }
 
 Plug 'christoomey/vim-tmux-navigator'
@@ -42,7 +41,6 @@ set expandtab
 " fast exit from Insert mode 
 inoremap jk <ESC>
 inoremap kj <ESC>
-
 
 " j/k will move virtual lines (lines that wrap)
 noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
@@ -135,12 +133,6 @@ endfunction
 
 " Highlight currently open buffer in NERDTree
 autocmd BufEnter * call SyncTree()
-
-
-" Plugin: scrooloose/nerdcommenter
-" vmap ++ <plug>NERDCommenterToggle
-" nmap ++ <plug>NERDCommenterToggle
-" let g:NERDSpaceDelims = 1
 
 
 " Plugin: vim-prettier
