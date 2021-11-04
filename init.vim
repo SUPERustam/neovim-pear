@@ -1,5 +1,4 @@
 call plug#begin()
- 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -80,6 +79,14 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
+" Surround lines in parenthesis/brackets etc. in visual mode
+vnoremap a( <esc>`>a)<esc>`<i(<esc>
+vnoremap a[ <esc>`>a]<esc>`<i[<esc>
+vnoremap a{ <esc>`>a}<esc>`<i{<esc>
+vnoremap a" <esc>`>a"<esc>`<i"<esc>
+vnoremap a' <esc>`>a'<esc>`<i'<esc>
+vnoremap a` <esc>`>a`<esc>`<i`<esc>
+
 " move split panes to left/bottom/top/right
 nnoremap <A-h> <C-W>H
 nnoremap <A-j> <C-W>J
@@ -94,7 +101,7 @@ nnoremap <C-l> <C-w>l
 
 
 " Plugin: NERDTree
-nmap <C-n> :NERDTreeToggle<cr>
+nmap <C-n> :NERDTreeToggle<CR>
 
 " open NERDTree automatically
 " autocmd StdinReadPre * let s:std_in=1
