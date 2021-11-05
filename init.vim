@@ -14,7 +14,6 @@ Plug 'tpope/vim-commentary'
 Plug 'christoomey/vim-tmux-navigator'
 
 Plug 'morhetz/gruvbox'
-Plug 'dracula/vim'
 
 Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
 Plug '907th/vim-auto-save'
@@ -47,10 +46,9 @@ noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
 
 syntax enable
 colorscheme gruvbox
-" colorscheme dracula
 
 " turn off search highlight
-nnoremap ,<space> :nohlsearch<CR>
+nnoremap <silent> ,<space> :nohlsearch<CR>
 
 nmap ,x :x<CR>
 
@@ -73,11 +71,11 @@ nnoremap <silent> yd :let @+=expand('%:p:h')<CR>
 set splitright
 set splitbelow
 
-" move line or visually selected block - alt+j/k
-inoremap <A-j> <Esc>:m .+1<CR>==gi
-inoremap <A-k> <Esc>:m .-2<CR>==gi
-vnoremap <A-j> :m '>+1<CR>gv=gv
-vnoremap <A-k> :m '<-2<CR>gv=gv
+" move line or visually selected block - Ctrl+Shift+j/k
+inoremap <C-J> <Esc>:m .+1<CR>==gi
+inoremap <C-K> <Esc>:m .-2<CR>==gi
+vnoremap <C-J> :m '>+1<CR>gv=gv
+vnoremap <C-K> :m '<-2<CR>gv=gv
 
 " Surround lines in parenthesis/brackets etc. in visual mode
 vnoremap a( <esc>`>a)<esc>`<i(<esc>
