@@ -1,22 +1,21 @@
 call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'ryanoasis/vim-devicons'
-Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
-Plug 'mhinz/vim-startify'
-
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-commentary'
+Plug '907th/vim-auto-save'
+Plug 'puremourning/vimspector'
+
+Plug 'mhinz/vim-startify'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'airblade/vim-gitgutter'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
 " Plug 'prettier/vim-pettier', { 'do': 'yarn install' }
 
-Plug 'christoomey/vim-tmux-navigator'
-
 Plug 'morhetz/gruvbox'
-
-Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
-Plug '907th/vim-auto-save'
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 set mouse=a " enable mouse
@@ -72,30 +71,32 @@ set splitright
 set splitbelow
 
 " move line or visually selected block - Ctrl+Shift+j/k
-inoremap <C-J> <Esc>:m .+1<CR>==gi
-inoremap <C-K> <Esc>:m .-2<CR>==gi
-vnoremap <C-J> :m '>+1<CR>gv=gv
-vnoremap <C-K> :m '<-2<CR>gv=gv
+nnoremap <silent> <C-Down> :m .+1<CR>==
+nnoremap <silent> <C-Up> :m .-2<CR>==
+inoremap <silent> <C-Down> <Esc>:m .+1<CR>==gi
+inoremap <silent> <C-Up> <Esc>:m .-2<CR>==gi
+vnoremap <silent> <C-Down> :m '>+1<CR>gv=gv
+vnoremap <silent> <C-Up> :m '<-2<CR>gv=gv
 
 " Surround lines in parenthesis/brackets etc. in visual mode
-vnoremap a( <esc>`>a)<esc>`<i(<esc>
-vnoremap a[ <esc>`>a]<esc>`<i[<esc>
-vnoremap a{ <esc>`>a}<esc>`<i{<esc>
-vnoremap a" <esc>`>a"<esc>`<i"<esc>
-vnoremap a' <esc>`>a'<esc>`<i'<esc>
-vnoremap a` <esc>`>a`<esc>`<i`<esc>
+vnoremap <silent> a( <esc>`>a)<esc>`<i(<esc>
+vnoremap <silent> a[ <esc>`>a]<esc>`<i[<esc>
+vnoremap <silent> a{ <esc>`>a}<esc>`<i{<esc>
+vnoremap <silent> a" <esc>`>a"<esc>`<i"<esc>
+vnoremap <silent> a' <esc>`>a'<esc>`<i'<esc>
+vnoremap <silent> a` <esc>`>a`<esc>`<i`<esc>
 
 " move split panes to left/bottom/top/right
-nnoremap <A-h> <C-W>H
-nnoremap <A-j> <C-W>J
-nnoremap <A-k> <C-W>K
-nnoremap <A-l> <C-W>L
+nnoremap <silent> <A-h> <C-W>H
+nnoremap <silent> <A-j> <C-W>J
+nnoremap <silent> <A-k> <C-W>K
+nnoremap <silent> <A-l> <C-W>L
 
 " move between panes to left/bottom/top/right
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+nnoremap <silent> <C-h> <C-w>h
+nnoremap <silent> <C-j> <C-w>j
+nnoremap <silent> <C-k> <C-w>k
+nnoremap <silent> <C-l> <C-w>l
 
 
 " Plugin: NERDTree
@@ -291,13 +292,14 @@ nnoremap <silent> <space> p  :<C-u>CocListResume<CR>
 
 " Plugin: vim-auto-save
 autocmd VimEnter * AutoSaveToggle
+let g:auto_save_silent = 1  " do not display the auto-save notification
 
 " Vim jump to the last position when reopening a file
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | 
 
 autocmd FileType cpp map <buffer> <F5> :w<CR>:exec '!g++' shellescape(@%, 1) '-o .cpp.out && ./.cpp.out'<CR>
-
 autocmd Filetype python call SetPythonOptions()
+
 function SetPythonOptions()
   set colorcolumn=79
   set softtabstop=4
