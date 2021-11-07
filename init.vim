@@ -56,10 +56,26 @@ nmap ,x :x<CR>
 " map ,tc :tabclose<cr>
 " map ,tm :tabmove 
 
-map ,e :tabedit <C-r>=expand("%:p:h")<cr>/
+map ,e :tabedit <C-r>=expand("%:p:h")<CR>/
+
+" Go to tab by number
+noremap ,1 1gt
+noremap ,2 2gt
+noremap ,3 3gt
+noremap ,4 4gt
+noremap ,5 5gt
+noremap ,6 6gt
+noremap ,7 7gt
+noremap ,8 8gt
+noremap ,9 9gt
+
+" Go to last active tab
+au TabLeave * let g:lasttab = tabpagenr()
+nnoremap <silent> ,0 :exe "tabn ".g:lasttab<CR>
+vnoremap <silent> ,0 :exe "tabn ".g:lasttab<CR>
 
 " open file in a text by placing text and gf
-nnoremap gf :vert winc f<cr>
+nnoremap gf :vert winc f<CR>
 
 " copies filepath to clipboard by pressing yf
 nnoremap <silent> yf :let @+=expand('%:p')<CR>
