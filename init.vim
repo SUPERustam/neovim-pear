@@ -57,6 +57,8 @@ nmap ,x :x<CR>
 " map ,tm :tabmove 
 
 map ,e :tabedit <C-r>=expand("%:p:h")<CR>/
+map ,v :vsplit <C-r>=expand("%:p:h")<CR>/
+map ,s :split <C-r>=expand("%:p:h")<CR>/
 
 " Go to tab by number
 noremap ,1 1gt
@@ -101,6 +103,10 @@ vnoremap <silent> a{ <esc>`>a}<esc>`<i{<esc>
 vnoremap <silent> a" <esc>`>a"<esc>`<i"<esc>
 vnoremap <silent> a' <esc>`>a'<esc>`<i'<esc>
 vnoremap <silent> a` <esc>`>a`<esc>`<i`<esc>
+
+" Add blank lines above/below line
+nnoremap <silent>,O :set paste<CR>m`O<Esc>``:set nopaste<CR>
+nnoremap <silent>,o :set paste<CR>m`o<Esc>``:set nopaste<CR>
 
 " move split panes to left/bottom/top/right
 nnoremap <silent> <A-h> <C-W>H
