@@ -49,10 +49,11 @@ colorscheme gruvbox
 " turn off search highlight
 nnoremap <silent> ,<space> :nohlsearch<CR>
 
-nmap ,x :x<CR>
+nmap <silent> ,x :x<CR>
+nmap <silent> ,q :q<CR>
 
 " map ,tn :tabnew<cr>
-" map ,to :tabonly<cr>
+map ,to :tabonly<cr>
 " map ,tc :tabclose<cr>
 " map ,tm :tabmove 
 
@@ -316,10 +317,26 @@ nnoremap <silent> <space> p  :<C-u>CocListResume<CR>
 autocmd VimEnter * AutoSaveToggle
 let g:auto_save_silent = 1  " do not display the auto-save notification
 
+
+" Plugin: vimspector
+let g:vimspector_enable_mappings = 'HUMAN'
+
+nmap ,dl :call vimspector#Launch()<CR>
+nmap ,dr :VimspectorReset<CR>
+nmap ,de :VimspectorEval
+nmap ,dw :VimspectorWatch
+nmap ,do :VimspectorShowOutput
+nmap ,di <Plug>VimspectorBalloonEval
+xmap ,di <Plug>VimspectorBalloonEval
+
+let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools', 'vscode-node-debug2']
+
+
 " Vim jump to the last position when reopening a file
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | 
 
-autocmd FileType cpp map <buffer> <F5> :w<CR>:exec '!g++' shellescape(@%, 1) '-o .cpp.out && ./.cpp.out'<CR>
+autocmd FileType cpp map <buffer> <F7> :w<CR>:exec '!g++' shellescape(@%, 1) '-o .cpp.out && ./.cpp.out'<CR>
+autocmd FileType cpp imap <buffer> <F7> :w<CR>:exec '!g++' shellescape(@%, 1) '-o .cpp.out && ./.cpp.out'<CR>
 autocmd Filetype python call SetPythonOptions()
 
 function SetPythonOptions()
@@ -328,6 +345,6 @@ function SetPythonOptions()
   set tabstop=4
   set shiftwidth=4
 
-  map <buffer> <F5> :w<CR>:exec '!python' shellescape(@%, 1)<CR>
-  imap <buffer> <F5> :w<CR>:exec '!python' shellescape(@%, 1)<CR>
+  map <buffer> <F7> :w<CR>:exec '!python' shellescape(@%, 1)<CR>
+  imap <buffer> <F7> :w<CR>:exec '!python' shellescape(@%, 1)<CR>
 endfunction
