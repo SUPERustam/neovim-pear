@@ -345,6 +345,6 @@ function SetPythonOptions()
   set tabstop=4
   set shiftwidth=4
 
-  map <buffer> <F7> :w<CR>:exec '!python' shellescape(@%, 1)<CR>
-  imap <buffer> <F7> :w<CR>:exec '!python' shellescape(@%, 1)<CR>
+  map <buffer> <F7> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+  imap <buffer> <F7> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
 endfunction
