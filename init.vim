@@ -22,7 +22,8 @@ set mouse=a " enable mouse
 set encoding=utf-8
 set relativenumber
 set number
-set clipboard=unnamedplus  " using system clipboard filetype plugin on
+" using system clipboard filetype plugin on
+map ,clip :set clipboard=unnamedplus<CR>
 set cursorline
 set noswapfile            " disable creating swap file
 set backupdir=~/.cache/nvim " Directory to store backup files.
@@ -252,8 +253,9 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <F2> <Plug>(coc-rename)
 
 " Remap for format selected region
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+" xmap ,f  <Plug>(coc-format-selected)
+" nmap ,f  <Plug>(coc-format-selected)
+map <silent> ,f :call CocAction('format')<CR>
 
 augroup mygroup
   autocmd!
@@ -264,13 +266,13 @@ augroup mygroup
 augroup end
 
 " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
+xmap ,a  <Plug>(coc-codeaction-selected)
+nmap ,a  <Plug>(coc-codeaction-selected)
 
 " Remap for do codeAction of current line
-nmap <leader>ac  <Plug>(coc-codeaction)
+nmap ,ac  <Plug>(coc-codeaction)
 " Fix autofix problem of current line
-nmap <leader>qf  <Plug>(coc-fix-current)
+nmap ,qf  <Plug>(coc-fix-current)
 
 " Create mappings for function text object, requires document symbols feature of languageserver.
 xmap if <Plug>(coc-funcobj-i)
