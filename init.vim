@@ -252,9 +252,7 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 " Remap for rename current word
 nmap <F2> <Plug>(coc-rename)
 
-" Remap for format selected region
-" xmap ,f  <Plug>(coc-format-selected)
-" nmap ,f  <Plug>(coc-format-selected)
+" Format file
 map <silent> ,f :call CocAction('format')<CR>
 
 augroup mygroup
