@@ -18,12 +18,14 @@ Plug 'morhetz/gruvbox'
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
+" using system clipboard filetype plugin on
+" map ,clip :set clipboard=unnamedplus<CR>
+set clipboard=unnamedplus
+
 set mouse=a " enable mouse
 set encoding=utf-8
 set relativenumber
 set number
-" using system clipboard filetype plugin on
-map ,clip :set clipboard=unnamedplus<CR>
 set cursorline
 set noswapfile            " disable creating swap file
 set backupdir=~/.cache/nvim " Directory to store backup files.
@@ -53,9 +55,9 @@ nnoremap <silent> ,<space> :nohlsearch<CR>
 nmap <silent> ,x :x<CR>
 nmap <silent> ,q :q<CR>
 
-" map ,tn :tabnew<cr>
+map ,tn :tabnew<cr>
 map ,to :tabonly<cr>
-" map ,tc :tabclose<cr>
+map ,tc :tabclose<cr>
 " map ,tm :tabmove 
 
 map ,e :tabedit <C-r>=expand("%:p:h")<CR>/
