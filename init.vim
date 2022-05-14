@@ -168,6 +168,7 @@ autocmd BufEnter * call SyncTree()
 
 
 " Plugin: vim-prettier
+
 "let g:prettier#quickfix_enabled = 0
 "let g:prettier#quickfix_auto_focus = 0
 " prettier command for coc
