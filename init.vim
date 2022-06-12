@@ -54,6 +54,7 @@ nnoremap <silent> ,<space> :nohlsearch<CR>
 
 nmap <silent> ,x :x<CR>
 nmap <silent> ,q :q<CR>
+nmap <silent> ,w :w<CR>
 
 map ,tn :tabnew<cr>
 map ,to :tabonly<cr>
