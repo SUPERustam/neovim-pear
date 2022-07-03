@@ -18,6 +18,4 @@ sudo npm install -g neovim
 
 nvim -E -s dummy.out << EOF
 :PlugInstall
-:CocInstall coc-snippets coc-pairs coc-tsserver coc-eslint
-:CocInstall coc-prettier coc-json coc-clangd coc-pyright
 EOF
