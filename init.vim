@@ -35,7 +35,7 @@ set number
 set cursorline
 set noswapfile            " disable creating swap file
 set backupdir=~/.cache/nvim " Directory to store backup files.
-
+ 
 set smarttab
 set smartindent
 set softtabstop=2
@@ -93,7 +93,7 @@ nmap <silent> ,w :w<CR>
 
 map ,tn :tabnew<cr>
 map ,to :tabonly<cr>
-map ,tc :tabclose<cr>
+" map ,tc :tabclose<cr>
 " map ,tm :tabmove 
 
 map ,e :tabedit <C-r>=expand("%:p:h")<CR>/
@@ -205,13 +205,13 @@ autocmd BufEnter * call SyncTree()
 
 " Plugin: vim-prettier
 
-"let g:prettier#quickfix_enabled = 0
-"let g:prettier#quickfix_auto_focus = 0
+let g:prettier#quickfix_enabled = 0
+let g:prettier#quickfix_auto_focus = 0
 " prettier command for coc
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 " run prettier on save
-"let g:prettier#autoformat = 0
-"autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 
 " Plugin: ctrlp
