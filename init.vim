@@ -11,12 +11,17 @@ Plug 'mhinz/vim-startify'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-gitgutter'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
-" Plug 'prettier/vim-pettier', { 'do': 'yarn install' }
 
+" HTML, CSS and JavaScript
+Plug 'mattn/emmet-vim'
+Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install --frozen-lockfile --production',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
+
+" Design
 Plug 'morhetz/gruvbox'
 Plug 'ryanoasis/vim-devicons'
-Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 call plug#end()
 
 " using system clipboard filetype plugin on
