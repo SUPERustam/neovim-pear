@@ -204,7 +204,6 @@ autocmd BufEnter * call SyncTree()
 
 
 " Plugin: vim-prettier
-
 let g:prettier#quickfix_enabled = 0
 let g:prettier#quickfix_auto_focus = 0
 " prettier command for coc
@@ -223,12 +222,16 @@ let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclu
 let g:coc_global_extensions = [
   \ 'coc-snippets',
   \ 'coc-pairs',
+  \ 'coc-html',
+  \ 'coc-css',
   \ 'coc-tsserver',
   \ 'coc-eslint', 
   \ 'coc-prettier', 
   \ 'coc-json', 
   \ 'coc-clangd',
-  \ 'coc-pyright'
+  \ 'coc-pyright',
+  \ 'coc-sh',
+  \ 'coc-markdownlint' 
   \ ]
 
 " from readme
