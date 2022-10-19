@@ -14,7 +14,7 @@ if [ ! -x "$(command -v node)" ]; then
     export PATH="/usr/local/bin/:$PATH"
 fi
 
-sudo npm install -g neovim 
+sudo npm install -g neovim eslint pyright vscode-cpptools 
 
 nvim -E -s dummy.out << EOF
 :PlugInstall
