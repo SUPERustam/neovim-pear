@@ -31,5 +31,6 @@
   "pyright.disableCompletion": false,
   "pyright.disableDiagnostics": false,
   "pyright.completion.snippetSupport": true,
-  "pyright.organizeimports.provider": "pyright"
+  "pyright.organizeimports.provider": "pyright",
+  "snippets.ultisnips.pythonPrompt": false
 }

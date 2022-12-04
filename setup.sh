@@ -4,9 +4,9 @@
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
-pip install --upgrade pip pylint autoflake isort 
+pip3 install --upgrade pip pylint autoflake isort 
 # for my config in Neovim
-pip install --upgrade setuptools pyright autopep8 pynvim debugpy
+pip3 install --upgrade setuptools pyright autopep8 pynvim debugpy
 
 # Install latest nodejs
 if [ ! -x "$(command -v node)" ]; then
