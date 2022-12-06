@@ -18,4 +18,5 @@ sudo npm install -g neovim eslint pyright vscode-cpptools
 
 nvim -E -s dummy.out << EOF
 :PlugInstall
+:CocCommand clangd.install
 EOF
