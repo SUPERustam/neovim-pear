@@ -153,7 +153,7 @@ let g:gruvbox_transparent_bg=1
 
 colorscheme gruvbox
 " day/night theme
-if strftime("%H") <= 4 || strftime("%H") >= 21
+if strftime("%H") <= 6 || strftime("%H") >= 19 
   set background=dark
 else
   set background=light 
