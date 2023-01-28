@@ -1,6 +1,6 @@
 call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'scrooloose/nerdtree'
+Plug 'preservim/nerdtree'
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-commentary'
@@ -21,7 +21,7 @@ Plug 'prettier/vim-prettier', {
 
 " Design
 Plug 'morhetz/gruvbox'
-Plug 'ryanoasis/vim-devicons'
+" Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 
@@ -30,7 +30,7 @@ call plug#end()
 set clipboard=unnamedplus
 
 set mouse=a " enable mouse
-set encoding=utf-8
+set encoding=utf8
 set relativenumber
 set number
 set cursorline
@@ -179,7 +179,8 @@ let g:NERDTreeGitStatusWithFlags = 1
     "\ "Dirty"     : "#FFBD61",  
     "\ "Clean"     : "#87939A",   
     "\ "Ignored"   : "#808080"   
-    "\ }                         
+    "\ }  
+                              
 
 " let g:NERDTreeIgnore = ['^node_modules$']
 
@@ -230,10 +231,10 @@ let g:coc_global_extensions = [
   \ 'coc-clangd',
   \ 'coc-pyright',
   \ 'coc-sh',
-  \ 'coc-markdownlint' 
+  \ 'coc-markdownlint',
   \ ]
 
-" from readme
+" from readm
 " if hidden is not set, TextEdit might fail.
 set hidden " Some servers have issues with backup files, see #649 set nobackup set nowritebackup " Better display for messages set cmdheight=2 " You will have bad experience for diagnostic messages when it's default 4000.
 set updatetime=300
