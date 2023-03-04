@@ -24,6 +24,8 @@ Plug 'morhetz/gruvbox'
 " Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
+" map leader to comma
+let mapleader = "," 
 
 " using system clipboard filetype plugin on
 " map ,clip :set clipboard=unnamedplus<CR>
@@ -54,36 +56,37 @@ noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
 noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
 
 " turn off search highlight
-nnoremap <silent> ,<space> :nohlsearch<CR>
+nnoremap <silent> <leader><space> :nohlsearch<CR>
 
-nmap <silent> ,x :x<CR>
-nmap <silent> ,q :q<CR>
-nmap <silent> ,w :w<CR>
+" exit from neovim with different modes
+nmap <silent> <leader>q :q<CR>
+nmap <silent> <leader>w :w<CR>
+nmap <silent> <leader>x :x<CR> 
 
-map ,tn :tabnew<cr>
-map ,to :tabonly<cr>
-" map ,tc :tabclose<cr>
-" map ,tm :tabmove 
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+" map <leader>tc :tabclose<cr>
+" map <leader>tm :tabmove 
 
-map ,e :tabedit <C-r>=expand("%:p:h")<CR>/
-map ,v :vsplit <C-r>=expand("%:p:h")<CR>/
-map ,s :split <C-r>=expand("%:p:h")<CR>/
+map <leader>e :tabedit <C-r>=expand("%:p:h")<CR>/
+map <leader>v :vsplit <C-r>=expand("%:p:h")<CR>/
+map <leader>s :split <C-r>=expand("%:p:h")<CR>/
 
 " Go to tab by number
-noremap ,1 1gt
-noremap ,2 2gt
-noremap ,3 3gt
-noremap ,4 4gt
-noremap ,5 5gt
-noremap ,6 6gt
-noremap ,7 7gt
-noremap ,8 8gt
-noremap ,9 9gt
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
 
 " Go to last active tab
 au TabLeave * let g:lasttab = tabpagenr()
-nnoremap <silent> ,0 :exe "tabn ".g:lasttab<CR>
-vnoremap <silent> ,0 :exe "tabn ".g:lasttab<CR>
+nnoremap <silent> <leader>0 :exe "tabn ".g:lasttab<CR>
+vnoremap <silent> <leader>0 :exe "tabn ".g:lasttab<CR>
 
 " open file in a text by placing text and gf
 nnoremap gf :vert winc f<CR>
@@ -109,19 +112,20 @@ vnoremap <silent> <C-Up> :m '<-2<CR>gv=gv
 vnoremap <silent> a( <esc>`>a)<esc>`<i(<esc>
 vnoremap <silent> a[ <esc>`>a]<esc>`<i[<esc>
 vnoremap <silent> a{ <esc>`>a}<esc>`<i{<esc>
+vnoremap <silent> a< <esc>`>a><esc>`<i<<esc>
 vnoremap <silent> a" <esc>`>a"<esc>`<i"<esc>
 vnoremap <silent> a' <esc>`>a'<esc>`<i'<esc>
 vnoremap <silent> a` <esc>`>a`<esc>`<i`<esc>
 
 " Add blank lines above/below line
-nnoremap <silent>,O :set paste<CR>m`O<Esc>``:set nopaste<CR>
-nnoremap <silent>,o :set paste<CR>m`o<Esc>``:set nopaste<CR>
+nnoremap <silent><leader>O :set paste<CR>m`O<Esc>``:set nopaste<CR>
+nnoremap <silent><leader>o :set paste<CR>m`o<Esc>``:set nopaste<CR>
 
 " move split panes to left/bottom/top/right
-nnoremap <silent> <A-h> <C-W>H
-nnoremap <silent> <A-j> <C-W>J
-nnoremap <silent> <A-k> <C-W>K
-nnoremap <silent> <A-l> <C-W>L
+nnoremap <silent> <leader><C-h> <C-W>H
+nnoremap <silent> <leader><C-j> <C-W>J
+nnoremap <silent> <leader><C-k> <C-W>K
+nnoremap <silent> <leader><C-l> <C-W>L
 
 " move between panes to left/bottom/top/right
 nnoremap <silent> <C-h> <C-w>h
@@ -234,7 +238,7 @@ let g:coc_global_extensions = [
   \ 'coc-markdownlint',
   \ ]
 
-" from readm
+" from readme
 " if hidden is not set, TextEdit might fail.
 set hidden " Some servers have issues with backup files, see #649 set nobackup set nowritebackup " Better display for messages set cmdheight=2 " You will have bad experience for diagnostic messages when it's default 4000.
 set updatetime=300
@@ -245,14 +249,21 @@ set shortmess+=c
 " always show signcolumns
 set signcolumn=yes
 
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-" inoremap <silent><expr> <TAB>
-"       \ pumvisible() ? "\<C-n>" :
-"       \ <SID>check_back_space() ? "\<TAB>":
-"       \ coc#refresh()
-" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+" Use tab for trigger completion with characters ahead and navigate
+" NOTE: There's always complete item selected by default, you may want to enable
+" no select by `"suggest.noselect": true` in your configuration file
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
@@ -295,7 +306,7 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <F2> <Plug>(coc-rename)
 
 " Format file
-map <silent> ,f :call CocAction('format')<CR>
+map <silent> <leader>f :call CocAction('format')<CR>
 
 augroup mygroup
   autocmd!
@@ -306,13 +317,13 @@ augroup mygroup
 augroup end
 
 " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-xmap ,a  <Plug>(coc-codeaction-selected)
-nmap ,a  <Plug>(coc-codeaction-selected)
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap for do codeAction of current line
-nmap ,ac  <Plug>(coc-codeaction)
+nmap <leader>ac  <Plug>(coc-codeaction)
 " Fix autofix problem of current line
-nmap ,qf  <Plug>(coc-fix-current)
+nmap <leader>qf  <Plug>(coc-fix-current)
 
 " Create mappings for function text object, requires document symbols feature of languageserver.
 xmap if <Plug>(coc-funcobj-i)
@@ -352,7 +363,7 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
-nnoremap <silent> <space> p  :<C-u>CocListResume<CR>
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 
 " Plugin: vim-auto-save
@@ -363,13 +374,13 @@ let g:auto_save_silent = 1  " do not display the auto-save notification
 " Plugin: vimspector
 let g:vimspector_enable_mappings = 'HUMAN'
 
-nmap ,dl :call vimspector#Launch()<CR>
-nmap ,dr :VimspectorReset<CR>
-nmap ,de :VimspectorEval
-nmap ,dw :VimspectorWatch
-nmap ,do :VimspectorShowOutput
-nmap ,di <Plug>VimspectorBalloonEval
-xmap ,di <Plug>VimspectorBalloonEval
+nmap <leader>dl :call vimspector#Launch()<CR>
+nmap <leader>dr :VimspectorReset<CR>
+nmap <leader>de :VimspectorEval
+nmap <leader>dw :VimspectorWatch
+nmap <leader>do :VimspectorShowOutput
+nmap <leader>di <Plug>VimspectorBalloonEval
+xmap <leader>di <Plug>VimspectorBalloonEval
 
 let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools', 'vscode-node-debug2']
 
