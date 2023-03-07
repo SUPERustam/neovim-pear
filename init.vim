@@ -65,7 +65,6 @@ nmap <silent> <leader>x :x<CR>
 
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
-" map <leader>tc :tabclose<cr>
 " map <leader>tm :tabmove 
 
 map <leader>e :tabedit <C-r>=expand("%:p:h")<CR>/
@@ -100,13 +99,11 @@ nnoremap <silent> yd :let @+=expand('%:p:h')<CR>
 set splitright
 set splitbelow
 
-" move line or visually selected block - Ctrl+Shift+j/k
-nnoremap <silent> <C-Down> :m .+1<CR>==
-nnoremap <silent> <C-Up> :m .-2<CR>==
-inoremap <silent> <C-Down> <Esc>:m .+1<CR>==gi
-inoremap <silent> <C-Up> <Esc>:m .-2<CR>==gi
-vnoremap <silent> <C-Down> :m '>+1<CR>gv=gv
-vnoremap <silent> <C-Up> :m '<-2<CR>gv=gv
+" move line or visually selected block: m move up, n move down 
+vnoremap <silent> n :m '>+1<CR>gv=gv
+vnoremap <silent> m :m '<-2<CR>gv=gv
+nnoremap <silent> n :m -2<CR>
+nnoremap <silent> m :m +<CR>
 
 " Surround lines in parenthesis/brackets etc. in visual mode
 vnoremap <silent> a( <esc>`>a)<esc>`<i(<esc>
@@ -171,25 +168,26 @@ nmap <C-n> :NERDTreeToggle<CR>
 " autocmd StdinReadPre * let s:std_in=1
 " autocmd VimEnter * NERDTree
 
-let g:NERDTreeGitStatusWithFlags = 1
-"let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:NERDTreeGitStatusWithFlags = 1 
+
+" let g:WebDevIconsUnicodeDecorateFolderNodes = 1
 "let g:NERDTreeGitStatusNodeColorization = 1
 "let g:NERDTreeColorMapCustom = {
-    "\ "Staged"    : "#0ee375",  
-    "\ "Modified"  : "#d9bf91",  
-    "\ "Renamed"   : "#51C9FC",  
-    "\ "Untracked" : "#FCE77C",  
-    "\ "Unmerged"  : "#FC51E6",  
-    "\ "Dirty"     : "#FFBD61",  
-    "\ "Clean"     : "#87939A",   
-    "\ "Ignored"   : "#808080"   
-    "\ }  
+"    "\ "Staged"    : "#0ee375",  
+"    "\ "Modified"  : "#d9bf91",  
+"    "\ "Renamed"   : "#51C9FC",  
+"    "\ "Untracked" : "#FCE77C",  
+"    "\ "Unmerged"  : "#FC51E6",  
+"    "\ "Dirty"     : "#FFBD61",  
+"    "\ "Clean"     : "#87939A",   
+"    "\ "Ignored"   : "#808080"   
+"    "\ }  
                               
 
 " let g:NERDTreeIgnore = ['^node_modules$']
 
 " sync open file with NERDTree
-" " Check if NERDTree is open or active
+" Check if NERDTree is open or active
 function! IsNERDTreeOpen()        
   return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
 endfunction
