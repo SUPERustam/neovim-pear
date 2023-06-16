@@ -386,10 +386,10 @@ let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools', 'vscode-node-
 " Vim jump to the last position when reopening a file
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | 
 
-autocmd FileType cpp map <buffer> <F7> :w<CR>:exec '!g++' shellescape(@%, 1) && ./a.out'<CR>
-autocmd FileType cpp imap <buffer> <F7> :w<CR>:exec '!g++' shellescape(@%, 1) && ./a.out'<CR>
-autocmd FileType c map <buffer> <F7> :w<CR>:exec '!gcc' shellescape(@%, 1) && ./a.out'<CR>
-autocmd FileType c imap <buffer> <F7> :w<CR>:exec '!gcc' shellescape(@%, 1) && ./a.out'<CR>
+autocmd FileType cpp map <buffer> <F7> :w<CR>:exec '!g++' shellescape(@%, 1) && ./a.out<CR>
+autocmd FileType cpp imap <buffer> <F7> :w<CR>:exec '!g++' shellescape(@%, 1) && ./a.out<CR>
+autocmd FileType c map <buffer> <F7> :w<CR>:exec '!gcc' shellescape(@%, 1) && ./a.out<CR>
+autocmd FileType c imap <buffer> <F7> :w<CR>:exec '!gcc' shellescape(@%, 1) && ./a.out<CR>
 autocmd Filetype python call SetPythonOptions()
 autocmd Filetype javascript call SetJSOptions()
 
