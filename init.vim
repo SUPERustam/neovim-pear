@@ -100,10 +100,10 @@ set splitright
 set splitbelow
 
 " move line or visually selected block: m move up, n move down 
-vnoremap <silent> n :m '>+1<CR>gv=gv
-vnoremap <silent> m :m '<-2<CR>gv=gv
-nnoremap <silent> n :m -2<CR>
-nnoremap <silent> m :m +<CR>
+" vnoremap <silent> n :m '>+1<CR>gv=gv
+" vnoremap <silent> m :m '<-2<CR>gv=gv
+" nnoremap <silent> n :m -2<CR>
+" nnoremap <silent> m :m +<CR>
 
 " Surround lines in parenthesis/brackets etc. in visual mode
 vnoremap <silent> a( <esc>`>a)<esc>`<i(<esc>
