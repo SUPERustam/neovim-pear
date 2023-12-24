@@ -406,3 +406,4 @@ function SetPythonOptions()
   map <buffer> <F7> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
   imap <buffer> <F7> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
 endfunction
+
