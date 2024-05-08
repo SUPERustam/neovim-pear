@@ -230,10 +230,9 @@ let g:coc_global_extensions = [
   \ 'coc-eslint', 
   \ 'coc-prettier', 
   \ 'coc-json', 
-  \ 'coc-clangd',
-  \ 'coc-pyright',
+  \ 'coc-clangd', 
   \ 'coc-sh',
-  \ 'coc-markdownlint',
+  \ 'coc-markdownlint'
   \ ]
 
 " from readme

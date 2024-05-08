@@ -1,36 +1,10 @@
 {
   "suggest.noselect": true,
   "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/15.0.3/clangd_15.0.3/bin/clangd",
-  "pyright.enable": true,
-  "python.analysis.autoImportCompletions": true,
-  "python.analysis.autoSearchPaths": true,
-  "python.analysis.diagnosticMode": "openFilesOnly",
-  "python.analysis.stubPath": "typings",
-  "python.analysis.typeshedPaths": [],
-  "python.analysis.diagnosticSeverityOverrides": {},
-  "python.analysis.typeCheckingMode": "basic",
-  "python.analysis.useLibraryCodeForTypes": true,
-  "python.pythonPath": "python",
-  "python.venvPath": "",
-  "python.formatting.provider": "autopep8",
-  "python.formatting.autopep8Path": "autopep8",
-  "python.formatting.autopep8Args": [],
-  "python.linting.enabled": true,
-  "python.linting.mypyEnabled": false,
-  "python.linting.flake8Enabled": false,
-  "python.linting.banditEnabled": false,
-  "python.linting.pytypeEnabled": false,
-  "python.linting.pycodestyleEnabled": false,
-  "python.linting.prospectorEnabled": false,
-  "python.linting.pydocstyleEnabled": false,
-  "python.linting.pylamaEnabled": false,
-  "python.linting.pylintEnabled": false,
-  "python.sortImports.path": "",
-  "python.sortImports.args": [],
-  "pyright.server": "",
-  "pyright.disableCompletion": false,
-  "pyright.disableDiagnostics": false,
-  "pyright.completion.snippetSupport": true,
-  "pyright.organizeimports.provider": "pyright",
-  "snippets.ultisnips.pythonPrompt": false
+  "languageserver": {
+    "ruff-lsp": {
+      "command": "ruff-lsp",
+      "filetypes": ["python"]
+    }
+  }
 }
