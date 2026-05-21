@@ -132,10 +132,10 @@ nnoremap <silent><leader>O :set paste<CR>m`O<Esc>``:set nopaste<CR>
 nnoremap <silent><leader>o :set paste<CR>m`o<Esc>``:set nopaste<CR>
 
 " move split panes to left/bottom/top/right
-nnoremap <silent> <leader><C-h> <C-W>H
-nnoremap <silent> <leader><C-j> <C-W>J
-nnoremap <silent> <leader><C-k> <C-W>K
-nnoremap <silent> <leader><C-l> <C-W>L
+nnoremap <silent> ,H <C-W>H
+nnoremap <silent> ,J <C-W>J
+nnoremap <silent> ,K <C-W>K
+nnoremap <silent> ,L <C-W>L
 
 " move between panes to left/bottom/top/right
 nnoremap <silent> <C-h> <C-w>h
@@ -326,6 +326,8 @@ EOF
 
 " Plugin: nvim-tree
 nnoremap <silent> <leader>n :NvimTreeToggle<CR>
+nnoremap <silent> <leader>t :NvimTreeFocus<CR>
+nnoremap <silent> <leader>b :wincmd p<CR>
 nnoremap <silent> <leader>N :NvimTreeFindFile<CR>
 
 " Plugin: fff.nvim

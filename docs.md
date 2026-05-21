@@ -139,18 +139,10 @@ Source means:
 | Normal/Visual/Operator | `,1` ... `,9` | Jump to tab 1 through 9.                                    | `init.vim:75`  |
 | Normal                 | `,0`          | Jump to the last active tab.                                | `init.vim:87`  |
 | Visual                 | `,0`          | Jump to the last active tab.                                | `init.vim:88`  |
-| Normal                 | `,<C-h>`      | Move current split to the far left.                         | `init.vim:122` |
-| Normal                 | `,<C-j>`      | Move current split to the bottom.                           | `init.vim:123` |
-| Normal                 | `,<C-k>`      | Move current split to the top.                              | `init.vim:124` |
-| Normal                 | `,<C-l>`      | Move current split to the far right.                        | `init.vim:125` |
-| Normal                 | `<C-h>`       | Move to the split on the left.                              | `init.vim:128` |
-| Normal                 | `<C-j>`       | Move to the split below.                                    | `init.vim:129` |
-| Normal                 | `<C-k>`       | Move to the split above.                                    | `init.vim:130` |
-| Normal                 | `<C-l>`       | Move to the split on the right.                             | `init.vim:131` |
-| Normal                 | `<C-w>h`      | Move to the split on the left.                              | `builtin`      |
-| Normal                 | `<C-w>j`      | Move to the split below.                                    | `builtin`      |
-| Normal                 | `<C-w>k`      | Move to the split above.                                    | `builtin`      |
-| Normal                 | `<C-w>l`      | Move to the split on the right.                             | `builtin`      |
+| Normal                 | `,H`          | Move the current split to the far left.                     | `init.vim:122` |
+| Normal                 | `,J`          | Move the current split to the bottom.                       | `init.vim:123` |
+| Normal                 | `,K`          | Move the current split to the top.                          | `init.vim:124` |
+| Normal                 | `,L`          | Move the current split to the far right.                    | `init.vim:125` |
 | Normal                 | `<C-w>v`      | Create vertical split.                                      | `builtin`      |
 | Normal                 | `<C-w>s`      | Create horizontal split.                                    | `builtin`      |
 | Normal                 | `gt`          | Go to next tab.                                             | `builtin`      |
@@ -167,6 +159,8 @@ Source means:
 | Mode   | Shortcut | Action                                                                  | Source                                  |
 | ------ | -------- | ----------------------------------------------------------------------- | --------------------------------------- |
 | Normal | `,n`     | Toggle nvim-tree.                                                       | `init.vim`                              |
+| Normal | `,t`     | Focus nvim-tree.                                                        | `init.vim`                              |
+| Normal | `,b`     | Return to the previous window from nvim-tree or any other split.        | `init.vim`                              |
 | Normal | `,N`     | Reveal current file in nvim-tree.                                       | `init.vim`                              |
 | Normal | `,p`     | Open fff.nvim file finder.                                              | `init.vim`                              |
 | Normal | `,g`     | Open fff.nvim live grep when supported by the installed plugin version. | `init.vim`                              |
@@ -177,10 +171,6 @@ Source means:
 | Normal | `,rd`    | Disconnect the current SSHFS host.                                      | `init.vim`                              |
 | Normal | `,rf`    | Find files on the connected SSHFS host.                                 | `init.vim`                              |
 | Normal | `,rg`    | Live grep on the connected SSHFS host.                                  | `init.vim`                              |
-| Normal | `<C-h>`  | Navigate left between Vim/tmux panes when tmux integration is active.   | `vim-tmux-navigator` and `init.vim:128` |
-| Normal | `<C-j>`  | Navigate down between Vim/tmux panes when tmux integration is active.   | `vim-tmux-navigator` and `init.vim:129` |
-| Normal | `<C-k>`  | Navigate up between Vim/tmux panes when tmux integration is active.     | `vim-tmux-navigator` and `init.vim:130` |
-| Normal | `<C-l>`  | Navigate right between Vim/tmux panes when tmux integration is active.  | `vim-tmux-navigator` and `init.vim:131` |
 
 ### Completion, LSP, And CoC
 
