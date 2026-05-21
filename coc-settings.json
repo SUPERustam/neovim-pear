@@ -6,5 +6,6 @@
       "command": "ruff-lsp",
       "filetypes": ["python"]
     }
-  }
+  },
+  "snippets.ultisnips.pythonPrompt": false
 }
