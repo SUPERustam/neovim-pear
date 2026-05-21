@@ -1,2 +1,4 @@
 WRN 2026-05-21T15:15:03.228 ?.18762    server_start:197: Failed to start server: operation not permitted: /var/folders/0_/rw0q19mn7hq3c2rsyy739y9m0000gn/T/nvim.superustam/5ZTgL4/nvim.18762.0
 WRN 2026-05-21T15:15:03.228 ?.18763    server_start:197: Failed to start server: operation not permitted: /var/folders/0_/rw0q19mn7hq3c2rsyy739y9m0000gn/T/nvim.superustam/wYq2Dh/nvim.18763.0
+WRN 2026-05-21T16:06:55.929 ?.32791    server_start:197: Failed to start server: operation not permitted: /var/folders/0_/rw0q19mn7hq3c2rsyy739y9m0000gn/T/nvim.superustam/8esFjB/nvim.32791.0
+WRN 2026-05-21T16:06:59.670 ?.32877    server_start:197: Failed to start server: operation not permitted: /var/folders/0_/rw0q19mn7hq3c2rsyy739y9m0000gn/T/nvim.superustam/IHMNKK/nvim.32877.0
