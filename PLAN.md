@@ -2,7 +2,7 @@
 
 ## Summary
 
-Keep the config on `vim-plug`, but modernize the overlapping plugin areas with current Neovim-compatible tools. Main changes: replace NERDTree, replace or trial CtrlP with a faster finder, move formatting to one dedicated formatter layer, use Astral's `ty` and native `ruff server` for Python, remove JavaScript debugging from scope, and make keymaps platform-aware.
+Keep the config on `vim-plug`, but modernize the overlapping plugin areas with current Neovim-compatible tools. Main changes: replace NERDTree, replace CtrlP with `fff.nvim`, move formatting to one dedicated formatter layer, use Astral's `ty` and native `ruff server` for Python, remove JavaScript debugging from scope, and make keymaps platform-aware.
 
 Current upstream facts checked:
 
@@ -13,12 +13,11 @@ Current upstream facts checked:
 
 ## Key Changes
 
-- Do not edit documentation files as part of this implementation. Keep all behavioral changes in config files only; update `README.md`/`docs.md` later only if explicitly requested.
 - File tree: replace `preservim/nerdtree`, `nerdtree-git-plugin`, and `vim-nerdtree-syntax-highlight` with `nvim-tree/nvim-tree.lua` plus `nvim-tree/nvim-web-devicons`; map tree toggle to `,n` and reveal current file to `,N`.
-- Search decision: run a short trial between `ibhagwan/fzf-lua` and `dmtrKovalenko/fff.nvim`.
-  - Default recommendation: use `fzf-lua` if the goal is one mature picker for files, buffers, grep, git, diagnostics, LSP symbols, commands, and help with low config risk.
-  - Choose `fff.nvim` instead if the priority is fastest repeated repo search, typo-tolerant matching, frecency ranking, and a Rust-backed index, accepting extra binary/index complexity and baseline memory use.
-  - Planned mappings for either option: `,p` files, `,b` buffers, `,g` live grep, `,r` recent files, `,s` symbols where supported.
+- Search: replace `ctrlp.vim` with `dmtrKovalenko/fff.nvim`.
+  - Use `fff.nvim` because the priority is fastest repeated repo search, typo-tolerant matching, frecency ranking, git-aware results, and a Rust-backed index.
+  - Accept the tradeoff: `fff.nvim` has extra binary/index complexity and some baseline memory use because its speed comes from a persistent backend, not only from spawning one-shot search commands.
+  - Planned mappings: `,p` files, `,g` live grep, `,r` rescan or recent/frecency workflow if supported by the plugin, `,s` search current word/content workflow if supported.
 - Formatting: remove `vim-prettier` and disable CoC/prettier format-on-save. Add `stevearc/conform.nvim` as the only save-time formatter layer.
   - Python: `ruff_fix`, `ruff_organize_imports`, then `ruff_format`.
   - JSON/YAML/Markdown: `prettier` or `prettierd`.
@@ -52,10 +51,10 @@ Current upstream facts checked:
 ## Test Plan
 
 - Run `nvim --headless -i NONE +qa` to verify startup loads without config errors.
-- Run `:PlugInstall`/`:PlugUpdate`, then `:checkhealth` for `nvim-tree`, the chosen finder, `conform`, native LSP, and remote SSHFS dependencies.
+- Run `:PlugInstall`/`:PlugUpdate`, then `:checkhealth` for `nvim-tree`, `fff.nvim`, `conform`, native LSP, and remote SSHFS dependencies.
 - Verify formatting on Python, JSON, TOML, C/C++, Bash, YAML, Vimscript, and Markdown samples.
 - Verify Python tooling with one project: `ty` diagnostics/navigation/completion and Ruff diagnostics/fixes/formatting.
-- Compare finder candidates on the same repo: startup behavior, file search, live grep, result quality with typos, memory footprint, and dependency friction.
+- Verify `fff.nvim` on the same repo: startup behavior, file search, live grep, result quality with typos, memory footprint, and dependency friction.
 - Remote smoke test: connect to one SSH host via SSHFS, open a file, run remote find/grep, save a file, then disconnect cleanly.
 
 ## Assumptions
