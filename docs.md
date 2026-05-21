@@ -97,7 +97,7 @@ echo "==> Done"
 | `ruff` | Native LSP and `conform.nvim` | Provides `ruff server`, fixes, import organization, and Python formatting. | `setup.sh`, `init.vim` |
 | `ty` | Native LSP | Provides Python type checking and language-server features. | `setup.sh`, `init.vim` |
 | `sshfs` | `remote-sshfs.nvim` | Mounts remote file systems for local editing. | `init.vim` |
-| `ripgrep` or `fd` | `remote-sshfs.nvim`, `fff.nvim` | Supports local and remote search workflows. | `init.vim` |
+| `ripgrep` and `fd` | `remote-sshfs.nvim`, `fff.nvim` | Supports local and remote search workflows. | `init.vim` |
 | `tmux` | `vim-tmux-navigator` | Enables moving between Vim splits and tmux panes with the same navigation keys. | `init.vim:5` |
 
 ## Plugins
@@ -116,7 +116,7 @@ echo "==> Done"
 | `mhinz/vim-startify` | Start screen and recent files. |
 | `airblade/vim-gitgutter` | Git diff signs in the gutter. |
 | `neovim/nvim-lspconfig` | Native LSP setup for Ruff and ty. |
-| `stevearc/conform.nvim` | Save-time and manual formatting orchestration. |
+| `stevearc/conform.nvim` | Manual formatting orchestration through `:Format` and `,f`. |
 | `nvim-lua/plenary.nvim` | Lua utility dependency for remote SSHFS and Telescope workflows. |
 | `nvim-telescope/telescope.nvim` | Picker backend for remote SSHFS workflows. |
 | `linux-cultist/venv-selector.nvim` | Python virtualenv, Anaconda, and Miniconda selection. |
@@ -255,7 +255,6 @@ Source means:
 | Normal | `gr` | Go to references. | `init.vim:286` |
 | Normal | `K` | Show help for Vim/help buffers, otherwise show CoC hover docs. | `init.vim:289` |
 | Normal | `<F2>` | Rename symbol. | `init.vim:303` |
-| Normal/Visual/Operator | `,f` | Format with Conform. | `init.vim` |
 | Visual | `,a` | Code action for selected region. | `init.vim:317` |
 | Normal | `,a` | Code action for selected region. | `init.vim:318` |
 | Normal | `,ac` | Code action for current line. | `init.vim:321` |
@@ -280,6 +279,7 @@ Source means:
 | Mode | Shortcut | Action | Source |
 | --- | --- | --- | --- |
 | Command | `:Format` | Format current buffer through Conform. | `init.vim` |
+| Normal | `,f` | Format current buffer through Conform. | `init.vim` |
 | Command | `:Fold` | Fold current buffer through CoC. | `init.vim:339` |
 | Command | `:OR` | Organize imports through Conform's Ruff formatter. | `init.vim` |
 | Normal/Visual | `gc` + motion | Comment or uncomment using a motion or selection. | `vim-commentary` |
