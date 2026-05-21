@@ -19,3 +19,8 @@ cd ~/.config/nvim
 - [ ] Figure out coc.nvim shortcuts
 - [ ] Full support of debugger
 - [ ] Move from Ctrl to something else
+- [ ] Format py, bash, toml, yaml, json files
+- [ ] Search files, names (maybe use https://github.com/dmtrKovalenko/fff)
+- [ ] File system tree
+- [ ] Easy work mamba/conda
+- [ ] Support for ssh remote machines
