@@ -44,13 +44,24 @@ curl -fLo "$NVIM_DATA/site/autoload/plug.vim" --create-dirs \
   https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 echo "==> Updating Python support"
-python3 -m pip install --upgrade pip setuptools pynvim debugpy
+python3 -m pip install --upgrade pip setuptools pynvim ruff ty
+if command -v mamba >/dev/null 2>&1; then
+  mamba install -n base -y pynvim
+fi
 
 echo "==> Updating Node support"
 if command -v npm >/dev/null 2>&1; then
-  npm install -g neovim eslint vscode-cpptools
+  npm install -g neovim eslint prettier
 else
   echo "npm is not installed; skipping Node package updates."
+fi
+
+echo "==> Updating formatter/search CLIs"
+if command -v brew >/dev/null 2>&1; then
+  brew install fd taplo shfmt
+  brew tap macos-fuse-t/homebrew-cask
+  brew install fuse-t
+  brew install fuse-t-sshfs
 fi
 
 echo "==> Updating Vim plugins and CoC extensions"
@@ -65,26 +76,28 @@ echo "==> Done"
 | --- | --- | --- | --- |
 | Neovim | Everything | Runs the editor and loads this config. | `README.md`, `setup.sh`, update script |
 | Homebrew | Update script on macOS | Updates or installs Neovim on macOS. | `docs.md` update script |
-| `git` | `sync.sh`, `ctrlp.vim`, `vim-gitgutter`, `nerdtree-git-plugin`, update script | Pulls this config, lists project files for CtrlP, and powers Git UI/status plugins. | `sync.sh`, `init.vim:11`, `init.vim:12`, `init.vim:219` |
+| `git` | `sync.sh`, `vim-gitgutter`, `nvim-tree`, `fff.nvim`, update script | Pulls this config and powers Git UI/status-aware plugins. | `sync.sh`, `init.vim` |
 | `curl` | `setup.sh`, update script | Downloads `vim-plug` and the Node installer fallback. | `setup.sh` |
 | `vim-plug` | All Vim plugins | Plugin manager used by every `Plug ...` entry. | `autoload/plug.vim`, `init.vim:1` |
-| Python 3 | Python run shortcut, Python host support, Vimspector, `ruff-lsp` | Runs Python files with `<F7>`, provides Neovim Python integration, and supports Python debugging/linting tools. | `setup.sh`, `init.vim:405`, `coc-settings.json` |
-| `pip` | `pynvim`, `debugpy`, `ruff-lsp` | Installs and updates Python packages used by Neovim and language tooling. | `setup.sh` |
+| Python 3 | Python run shortcut, Python host support, Ruff, ty | Runs Python files with `<F7>`, provides Neovim Python integration, and supports Python linting/type-checking tools. | `setup.sh`, `init.vim` |
+| `pip` | `pynvim`, `ruff`, `ty` | Installs and updates Python packages used by Neovim and language tooling. | `setup.sh` |
 | `pynvim` | Neovim Python provider | Lets Python-based Neovim integrations talk to the editor. | `setup.sh` |
-| `debugpy` | `vimspector` | Python debug adapter installed as one of the Vimspector gadgets. | `setup.sh`, `init.vim:382` |
-| `uv` | Optional Python tooling | Not referenced directly by this config today; useful if you prefer installing Python CLI tools such as `ruff-lsp` outside `pip`. | Not referenced |
-| Node.js | `coc.nvim`, CoC extensions, `vim-prettier`, `eslint`, Vimspector Node debugger | Runs CoC, language servers, formatter tooling, and JavaScript debug adapters. | `setup.sh`, `init.vim:2`, `init.vim:18` |
-| `npm` | `neovim` npm package, `eslint`, `vscode-cpptools` | Installs global Node packages used by this setup. | `setup.sh` |
+| `uv` | Optional Python tooling | Not referenced directly by this config today; useful if you prefer installing Python CLI tools such as `ruff` or `ty` outside `pip`. | Not referenced |
+| Node.js | `coc.nvim`, CoC extensions, `eslint`, Prettier | Runs CoC, language servers, linting, and formatter tooling. | `setup.sh`, `init.vim` |
+| `npm` | `neovim` npm package, `eslint`, Prettier | Installs global Node packages used by this setup. | `setup.sh` |
 | `neovim` npm package | Node-based Neovim integrations | Provides Node client support for Neovim plugins/tools. | `setup.sh` |
 | `eslint` | `coc-eslint` | Provides JavaScript/TypeScript lint diagnostics and fixes. | `setup.sh`, `init.vim:230` |
-| `yarn` | `vim-prettier` | Runs the plugin install hook: `yarn install --frozen-lockfile --production`. | `init.vim:18` |
-| Prettier | `vim-prettier`, `coc-prettier` | Formats JS, TS, CSS, JSON, Markdown, Vue, YAML, HTML, and related filetypes. | `init.vim:18`, `init.vim:231` |
+| Prettier | `conform.nvim` | Formats JS, TS, CSS, JSON, Markdown, Vue, YAML, HTML, and related filetypes. | `setup.sh`, `init.vim` |
+| `taplo` | `conform.nvim` | Formats TOML files when installed and visible to Neovim. | `init.vim` |
+| `clang-format` | `conform.nvim` | Formats C and C++ files when installed and visible to Neovim. | `init.vim` |
+| `shfmt` | `conform.nvim` | Formats shell scripts when installed and visible to Neovim. | `init.vim` |
 | `clangd` | `coc-clangd` | C/C++ language server for completion, diagnostics, and navigation. | `setup.sh`, `init.vim:233`, `coc-settings.json` |
-| `vscode-cpptools` | `vimspector` | C/C++ debug adapter gadget for Vimspector. | `setup.sh`, `init.vim:382` |
-| `vscode-node-debug2` | `vimspector` | Node.js debug adapter gadget for Vimspector. | `init.vim:382` |
-| `gcc` | C `<F7>` run shortcut | Compiles and runs C files. | `init.vim:390` |
-| `g++` | C++ `<F7>` run shortcut | Compiles and runs C++ files. | `init.vim:388` |
-| `ruff-lsp` | CoC custom Python language server | Provides Python language-server behavior configured for `python` filetypes. | `coc-settings.json` |
+| `gcc` | C `<F7>` run shortcut | Compiles and runs C files. | `init.vim` |
+| `g++` | C++ `<F7>` run shortcut | Compiles and runs C++ files. | `init.vim` |
+| `ruff` | Native LSP and `conform.nvim` | Provides `ruff server`, fixes, import organization, and Python formatting. | `setup.sh`, `init.vim` |
+| `ty` | Native LSP | Provides Python type checking and language-server features. | `setup.sh`, `init.vim` |
+| `sshfs` | `remote-sshfs.nvim` | Mounts remote file systems for local editing. | `init.vim` |
+| `ripgrep` or `fd` | `remote-sshfs.nvim`, `fff.nvim` | Supports local and remote search workflows. | `init.vim` |
 | `tmux` | `vim-tmux-navigator` | Enables moving between Vim splits and tmux panes with the same navigation keys. | `init.vim:5` |
 
 ## Plugins
@@ -94,19 +107,22 @@ echo "==> Done"
 | Plugin | Purpose |
 | --- | --- |
 | `neoclide/coc.nvim` | LSP, completion, diagnostics, code actions, and extensions. |
-| `preservim/nerdtree` | File tree sidebar. |
-| `ctrlpvim/ctrlp.vim` | Fuzzy file finder. |
+| `nvim-tree/nvim-tree.lua` | File tree sidebar. |
+| `nvim-tree/nvim-web-devicons` | File and folder icons for Lua UI plugins. |
+| `dmtrKovalenko/fff.nvim` | Rust-backed file search, grep, indexing, and frecency workflows. |
 | `christoomey/vim-tmux-navigator` | Seamless pane navigation between Vim and tmux. |
 | `tpope/vim-commentary` | Comment and uncomment code with motions. |
 | `907th/vim-auto-save` | Automatic saving. |
-| `puremourning/vimspector` | Debugger UI and debugger controls. |
 | `mhinz/vim-startify` | Start screen and recent files. |
-| `Xuyuanp/nerdtree-git-plugin` | Git status inside NERDTree. |
 | `airblade/vim-gitgutter` | Git diff signs in the gutter. |
-| `tiagofumo/vim-nerdtree-syntax-highlight` | NERDTree filetype coloring. |
+| `neovim/nvim-lspconfig` | Native LSP setup for Ruff and ty. |
+| `stevearc/conform.nvim` | Save-time and manual formatting orchestration. |
+| `nvim-lua/plenary.nvim` | Lua utility dependency for remote SSHFS and Telescope workflows. |
+| `nvim-telescope/telescope.nvim` | Picker backend for remote SSHFS workflows. |
+| `linux-cultist/venv-selector.nvim` | Python virtualenv, Anaconda, and Miniconda selection. |
+| `nosduco/remote-sshfs.nvim` | Remote SSHFS connect, file search, and live grep workflows. |
 | `mattn/emmet-vim` | Emmet expansion for HTML/CSS workflows. |
 | `HerringtonDarkholme/yats.vim` | TypeScript syntax. |
-| `prettier/vim-prettier` | Prettier formatting integration. |
 | `morhetz/gruvbox` | Gruvbox colorscheme. |
 
 ### CoC Extensions
@@ -119,11 +135,9 @@ echo "==> Done"
 | `coc-css` | CSS language support. |
 | `coc-tsserver` | JavaScript and TypeScript language server. |
 | `coc-eslint` | ESLint diagnostics and fixes. |
-| `coc-prettier` | Prettier integration through CoC. |
 | `coc-json` | JSON language support. |
 | `coc-clangd` | C/C++ language server. |
 | `coc-sh` | Shell language support. |
-| `coc-markdownlint` | Markdown linting. |
 
 ## Shortcuts
 
@@ -198,13 +212,28 @@ Source means:
 | Normal | `<C-w>s` | Create horizontal split. | `builtin` |
 | Normal | `gt` | Go to next tab. | `builtin` |
 | Normal | `gT` | Go to previous tab. | `builtin` |
+| Normal | `<A-j>` | Move current line down and reindent. | `init.vim` |
+| Normal | `<A-k>` | Move current line up and reindent. | `init.vim` |
+| Visual | `<A-j>` | Move selected block down and keep selection. | `init.vim` |
+| Visual | `<A-k>` | Move selected block up and keep selection. | `init.vim` |
+| Normal | `,j` | Portable fallback to move current line down and reindent. | `init.vim` |
+| Normal | `,k` | Portable fallback to move current line up and reindent. | `init.vim` |
 
 ### Files And Project Navigation
 
 | Mode | Shortcut | Action | Source |
 | --- | --- | --- | --- |
-| Normal | `<C-n>` | Toggle NERDTree. | `init.vim:165` |
-| Normal | `<C-p>` | Open CtrlP file finder. | `ctrlp.vim` |
+| Normal | `,n` | Toggle nvim-tree. | `init.vim` |
+| Normal | `,N` | Reveal current file in nvim-tree. | `init.vim` |
+| Normal | `,p` | Open fff.nvim file finder. | `init.vim` |
+| Normal | `,g` | Open fff.nvim live grep when supported by the installed plugin version. | `init.vim` |
+| Normal | `,r` | Rescan fff.nvim file index. | `init.vim` |
+| Normal | `,s` | Search current word/content with fff.nvim live grep when supported. | `init.vim` |
+| Normal | `,ve` | Select a Python virtual environment. | `init.vim` |
+| Normal | `,rc` | Connect to a remote SSHFS host. | `init.vim` |
+| Normal | `,rd` | Disconnect the current SSHFS host. | `init.vim` |
+| Normal | `,rf` | Find files on the connected SSHFS host. | `init.vim` |
+| Normal | `,rg` | Live grep on the connected SSHFS host. | `init.vim` |
 | Normal | `<C-h>` | Navigate left between Vim/tmux panes when tmux integration is active. | `vim-tmux-navigator` and `init.vim:128` |
 | Normal | `<C-j>` | Navigate down between Vim/tmux panes when tmux integration is active. | `vim-tmux-navigator` and `init.vim:129` |
 | Normal | `<C-k>` | Navigate up between Vim/tmux panes when tmux integration is active. | `vim-tmux-navigator` and `init.vim:130` |
@@ -226,7 +255,7 @@ Source means:
 | Normal | `gr` | Go to references. | `init.vim:286` |
 | Normal | `K` | Show help for Vim/help buffers, otherwise show CoC hover docs. | `init.vim:289` |
 | Normal | `<F2>` | Rename symbol. | `init.vim:303` |
-| Normal/Visual/Operator | `,f` | Format with CoC. | `init.vim:306` |
+| Normal/Visual/Operator | `,f` | Format with Conform. | `init.vim` |
 | Visual | `,a` | Code action for selected region. | `init.vim:317` |
 | Normal | `,a` | Code action for selected region. | `init.vim:318` |
 | Normal | `,ac` | Code action for current line. | `init.vim:321` |
@@ -250,35 +279,12 @@ Source means:
 
 | Mode | Shortcut | Action | Source |
 | --- | --- | --- | --- |
-| Command | `:Prettier` | Format current file through `CocCommand prettier.formatFile`. | `init.vim:212` |
-| Command | `:Format` | Format current buffer through CoC. | `init.vim:336` |
+| Command | `:Format` | Format current buffer through Conform. | `init.vim` |
 | Command | `:Fold` | Fold current buffer through CoC. | `init.vim:339` |
-| Command | `:OR` | Organize imports through CoC. | `init.vim:342` |
+| Command | `:OR` | Organize imports through Conform's Ruff formatter. | `init.vim` |
 | Normal/Visual | `gc` + motion | Comment or uncomment using a motion or selection. | `vim-commentary` |
 | Normal | `gcc` | Comment or uncomment current line. | `vim-commentary` |
 | Insert | `<C-y>,` | Expand Emmet abbreviation. | `emmet-vim` |
-
-### Debugging
-
-| Mode | Shortcut | Action | Source |
-| --- | --- | --- | --- |
-| Normal | `,dl` | Launch Vimspector. | `init.vim:374` |
-| Normal | `,dr` | Reset Vimspector. | `init.vim:375` |
-| Normal | `,de` | Evaluate expression in Vimspector. | `init.vim:376` |
-| Normal | `,dw` | Add Vimspector watch expression. | `init.vim:377` |
-| Normal | `,do` | Show Vimspector output. | `init.vim:378` |
-| Normal | `,di` | Evaluate expression under cursor in a Vimspector balloon. | `init.vim:379` |
-| Visual | `,di` | Evaluate selected expression in a Vimspector balloon. | `init.vim:380` |
-| Normal | `<F5>` | Start or continue debugging. | `vimspector` |
-| Normal | `<F3>` | Stop debugging. | `vimspector` |
-| Normal | `<F4>` | Restart debugging. | `vimspector` |
-| Normal | `<F6>` | Pause debugging. | `vimspector` |
-| Normal | `<F9>` | Toggle breakpoint. | `vimspector` |
-| Normal | `,<F9>` | Toggle conditional breakpoint. | `vimspector` |
-| Normal | `<F8>` | Add function breakpoint. | `vimspector` |
-| Normal | `<F10>` | Step over. | `vimspector` |
-| Normal | `<F11>` | Step into. | `vimspector` |
-| Normal | `<F12>` | Step out. | `vimspector` |
 
 ### Language-Specific Run Shortcuts
 

@@ -1,11 +1,5 @@
 {
   "suggest.noselect": true,
   "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/15.0.3/clangd_15.0.3/bin/clangd",
-  "languageserver": {
-    "ruff-lsp": {
-      "command": "ruff-lsp",
-      "filetypes": ["python"]
-    }
-  },
   "snippets.ultisnips.pythonPrompt": false
 }

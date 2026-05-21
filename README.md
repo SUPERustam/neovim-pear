@@ -13,13 +13,3 @@ cd ~/.config/nvim
 ```
 
 # TODO:
-- [ ] Fix NerdTree
-- [ ] Moving lines in file: https://stackoverflow.com/questions/741814/move-entire-line-up-and-down-in-vim:complete
-- [ ] Figure out coc.nvim shortcuts
-- [ ] Full support of debugger
-- [ ] Use Ctrl for linux/windows, command for macos
-- [ ] Format py, bash, toml, yaml, json files
-- [ ] Search files, names (maybe use https://github.com/dmtrKovalenko/fff)
-- [ ] File system tree
-- [ ] Easy work mamba/conda
-- [ ] Support for ssh remote machines

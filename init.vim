@@ -1,28 +1,36 @@
 call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'preservim/nerdtree'
-Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-tree/nvim-tree.lua'
+function! BuildFFF(info)
+  lua require("fff.download").download_or_build_binary()
+endfunction
+
+Plug 'dmtrKovalenko/fff.nvim', { 'do': function('BuildFFF') }
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-commentary'
 Plug '907th/vim-auto-save'
-Plug 'puremourning/vimspector'
 
 Plug 'mhinz/vim-startify'
-Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-gitgutter'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'neovim/nvim-lspconfig'
+Plug 'stevearc/conform.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'linux-cultist/venv-selector.nvim'
+Plug 'nosduco/remote-sshfs.nvim'
 
 " HTML, CSS and JavaScript
 Plug 'mattn/emmet-vim'
 Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install --frozen-lockfile --production',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
 
 " Design
 Plug 'morhetz/gruvbox'
-" Plug 'ryanoasis/vim-devicons'
 call plug#end()
+
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
+let g:python3_host_prog = '/opt/homebrew/Caskroom/miniforge/base/bin/python'
 
 " map leader to comma
 let mapleader = "," 
@@ -99,11 +107,16 @@ nnoremap <silent> yd :let @+=expand('%:p:h')<CR>
 set splitright
 set splitbelow
 
-" move line or visually selected block: m move up, n move down 
-" vnoremap <silent> n :m '>+1<CR>gv=gv
-" vnoremap <silent> m :m '<-2<CR>gv=gv
-" nnoremap <silent> n :m -2<CR>
-" nnoremap <silent> m :m +<CR>
+" move line or visually selected block
+nnoremap <silent> <A-j> :m .+1<CR>==
+nnoremap <silent> <A-k> :m .-2<CR>==
+vnoremap <silent> <A-j> :m '>+1<CR>gv=gv
+vnoremap <silent> <A-k> :m '<-2<CR>gv=gv
+" portable fallbacks for terminals that do not send Alt keys distinctly
+nnoremap <silent> <leader>j :m .+1<CR>==
+nnoremap <silent> <leader>k :m .-2<CR>==
+vnoremap <silent> <leader>j :m '>+1<CR>gv=gv
+vnoremap <silent> <leader>k :m '<-2<CR>gv=gv
 
 " Surround lines in parenthesis/brackets etc. in visual mode
 vnoremap <silent> a( <esc>`>a)<esc>`<i(<esc>
@@ -161,62 +174,174 @@ else
 endif
 
 
-" Plugin: NERDTree
-nmap <C-n> :NERDTreeToggle<CR>
+" Plugin: modern Lua tools
+lua << EOF
+local ok_tree, nvim_tree = pcall(require, "nvim-tree")
+if ok_tree then
+  nvim_tree.setup({
+    git = { enable = true },
+    renderer = {
+      group_empty = true,
+      highlight_git = true,
+      icons = { show = { git = true, file = true, folder = true, folder_arrow = true } },
+    },
+    update_focused_file = { enable = true, update_root = false },
+  })
+end
 
-" open NERDTree automatically
-" autocmd StdinReadPre * let s:std_in=1
-" autocmd VimEnter * NERDTree
+local function safe_require(name)
+  local ok, mod = pcall(require, name)
+  return ok and mod or nil
+end
 
-let g:NERDTreeGitStatusWithFlags = 1 
+local fff = safe_require("fff")
+if fff then
+  fff.setup({
+    lazy_sync = true,
+    prompt_vim_mode = true,
+  })
+end
 
-" let g:WebDevIconsUnicodeDecorateFolderNodes = 1
-"let g:NERDTreeGitStatusNodeColorization = 1
-"let g:NERDTreeColorMapCustom = {
-"    "\ "Staged"    : "#0ee375",  
-"    "\ "Modified"  : "#d9bf91",  
-"    "\ "Renamed"   : "#51C9FC",  
-"    "\ "Untracked" : "#FCE77C",  
-"    "\ "Unmerged"  : "#FC51E6",  
-"    "\ "Dirty"     : "#FFBD61",  
-"    "\ "Clean"     : "#87939A",   
-"    "\ "Ignored"   : "#808080"   
-"    "\ }  
-                              
+local conform = safe_require("conform")
+if conform then
+  conform.setup({
+    formatters_by_ft = {
+      python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
+      javascript = { "prettierd", "prettier", stop_after_first = true },
+      javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+      typescript = { "prettierd", "prettier", stop_after_first = true },
+      typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+      css = { "prettierd", "prettier", stop_after_first = true },
+      scss = { "prettierd", "prettier", stop_after_first = true },
+      less = { "prettierd", "prettier", stop_after_first = true },
+      html = { "prettierd", "prettier", stop_after_first = true },
+      json = { "prettierd", "prettier", stop_after_first = true },
+      jsonc = { "prettierd", "prettier", stop_after_first = true },
+      yaml = { "prettierd", "prettier", stop_after_first = true },
+      markdown = { "prettierd", "prettier", stop_after_first = true },
+      graphql = { "prettierd", "prettier", stop_after_first = true },
+      toml = { "taplo" },
+      c = { "clang-format" },
+      cpp = { "clang-format" },
+      sh = { "shfmt" },
+      bash = { "shfmt" },
+      zsh = { "shfmt" },
+    },
+  })
+end
 
-" let g:NERDTreeIgnore = ['^node_modules$']
+local function native_lsp_on_attach(_, bufnr)
+  local opts = { buffer = bufnr, silent = true }
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+  vim.keymap.set("n", "gy", vim.lsp.buf.type_definition, opts)
+  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+  vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+  vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, opts)
+  vim.keymap.set({ "n", "v" }, "<leader>a", vim.lsp.buf.code_action, opts)
+  vim.keymap.set("n", "[g", vim.diagnostic.goto_prev, opts)
+  vim.keymap.set("n", "]g", vim.diagnostic.goto_next, opts)
+end
 
-" sync open file with NERDTree
-" Check if NERDTree is open or active
-function! IsNERDTreeOpen()        
-  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
-endfunction
+if vim.lsp and vim.lsp.config then
+  vim.lsp.config("ruff", {
+    cmd = { "ruff", "server" },
+    filetypes = { "python" },
+    root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml", ".git" },
+    on_attach = native_lsp_on_attach,
+  })
+  vim.lsp.enable("ruff")
 
-" Call NERDTreeFind if NERDTree is active, current window contains a modifiable
-" file, and we're not in vimdiff
-function! SyncTree()
-  if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
-    NERDTreeFind
-    wincmd p
-  endif
-endfunction
+  vim.lsp.config("ty", {
+    cmd = { "ty", "server" },
+    filetypes = { "python" },
+    root_markers = { "ty.toml", "pyproject.toml", ".git" },
+    on_attach = native_lsp_on_attach,
+  })
+  vim.lsp.enable("ty")
+else
+  local lspconfig = safe_require("lspconfig")
+  if lspconfig and lspconfig.ruff then
+    lspconfig.ruff.setup({
+      cmd = { "ruff", "server" },
+      filetypes = { "python" },
+      on_attach = native_lsp_on_attach,
+    })
+  end
+end
 
-" Highlight currently open buffer in NERDTree
-autocmd BufEnter * call SyncTree()
+local ok_venv, venv_selector = pcall(require, "venv-selector")
+if ok_venv then
+  local fd_binary_name = nil
+  if vim.fn.executable("fd") == 1 then
+    fd_binary_name = "fd"
+  elseif vim.fn.executable("fdfind") == 1 then
+    fd_binary_name = "fdfind"
+  end
 
+  if fd_binary_name then
+    pcall(venv_selector.setup, {
+      options = {
+        activate_venv_in_terminal = true,
+        fd_binary_name = fd_binary_name,
+        set_environment_variables = true,
+      },
+    })
+  end
+end
 
-" Plugin: vim-prettier
-let g:prettier#quickfix_enabled = 0
-let g:prettier#quickfix_auto_focus = 0
-" prettier command for coc
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-" run prettier on save
-let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+local ok_remote, remote_sshfs = pcall(require, "remote-sshfs")
+if ok_remote then
+  pcall(remote_sshfs.setup, {
+    connections = {
+      ssh_configs = {
+        vim.fn.expand("$HOME") .. "/.ssh/config",
+        "/etc/ssh/ssh_config",
+      },
+      ssh_known_hosts = vim.fn.expand("$HOME") .. "/.ssh/known_hosts",
+      sshfs_args = {
+        "-o reconnect",
+        "-o ConnectTimeout=5",
+      },
+    },
+    mounts = {
+      base_dir = vim.fn.expand("$HOME") .. "/.sshfs/",
+      unmount_on_exit = true,
+    },
+    handlers = {
+      on_connect = { change_dir = true },
+      on_disconnect = { clean_mount_folders = false },
+    },
+    ui = {
+      picker = "telescope",
+      confirm = { connect = true, change_dir = false },
+    },
+  })
 
+  pcall(function()
+    require("telescope").load_extension("remote-sshfs")
+  end)
+end
+EOF
 
-" Plugin: ctrlp
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+" Plugin: nvim-tree
+nnoremap <silent> <leader>n :NvimTreeToggle<CR>
+nnoremap <silent> <leader>N :NvimTreeFindFile<CR>
+
+" Plugin: fff.nvim
+nnoremap <silent> <leader>p :lua require('fff').find_files()<CR>
+nnoremap <silent> <leader>g :lua if require('fff').live_grep then require('fff').live_grep() else vim.notify('fff.nvim live_grep is unavailable in this installed version', vim.log.levels.WARN) end<CR>
+nnoremap <silent> <leader>r :FFFScan<CR>
+nnoremap <silent> <leader>s :lua if require('fff').live_grep then require('fff').live_grep({ query = vim.fn.expand('<cword>') }) else vim.notify('fff.nvim live_grep is unavailable in this installed version', vim.log.levels.WARN) end<CR>
+
+" Plugin: venv-selector.nvim
+nnoremap <silent> <leader>ve :VenvSelect<CR>
+
+" Plugin: remote-sshfs.nvim
+nnoremap <silent> <leader>rc :RemoteSSHFSConnect<CR>
+nnoremap <silent> <leader>rd :RemoteSSHFSDisconnect<CR>
+nnoremap <silent> <leader>rf :RemoteSSHFSFindFiles<CR>
+nnoremap <silent> <leader>rg :RemoteSSHFSLiveGrep<CR>
 
 
 " Plugin: coc.nvim
@@ -228,11 +353,9 @@ let g:coc_global_extensions = [
   \ 'coc-css',
   \ 'coc-tsserver',
   \ 'coc-eslint', 
-  \ 'coc-prettier', 
   \ 'coc-json', 
   \ 'coc-clangd', 
-  \ 'coc-sh',
-  \ 'coc-markdownlint'
+  \ 'coc-sh'
   \ ]
 
 " from readme
@@ -303,12 +426,10 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <F2> <Plug>(coc-rename)
 
 " Format file
-map <silent> <leader>f :call CocAction('format')<CR>
+nnoremap <silent> <leader>f :Format<CR>
 
 augroup mygroup
   autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
   " Update signature help on jump placeholder
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
@@ -333,13 +454,13 @@ nmap <silent> <C-d> <Plug>(coc-range-select)
 xmap <silent> <C-d> <Plug>(coc-range-select)
 
 " Use `:Format` to format current buffer
-command! -nargs=0 Format :call CocAction('format')
+command! -nargs=0 Format lua require("conform").format({ async = false, timeout_ms = 3000, lsp_format = "never" })
 
 " Use `:Fold` to fold current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " use `:OR` for organize import of current buffer
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+command! -nargs=0 OR lua require("conform").format({ formatters = { "ruff_organize_imports" }, async = false, timeout_ms = 3000 })
 
 " Add status line support, for integration with other plugin, checkout `:h coc-status`
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
@@ -368,20 +489,6 @@ autocmd VimEnter * AutoSaveToggle
 let g:auto_save_silent = 1  " do not display the auto-save notification
 
 
-" Plugin: vimspector
-let g:vimspector_enable_mappings = 'HUMAN'
-
-nmap <leader>dl :call vimspector#Launch()<CR>
-nmap <leader>dr :VimspectorReset<CR>
-nmap <leader>de :VimspectorEval
-nmap <leader>dw :VimspectorWatch
-nmap <leader>do :VimspectorShowOutput
-nmap <leader>di <Plug>VimspectorBalloonEval
-xmap <leader>di <Plug>VimspectorBalloonEval
-
-let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools', 'vscode-node-debug2']
-
-
 " Vim jump to the last position when reopening a file
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | 
 
@@ -405,4 +512,3 @@ function SetPythonOptions()
   map <buffer> <F7> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
   imap <buffer> <F7> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
 endfunction
-
