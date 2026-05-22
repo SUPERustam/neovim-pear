@@ -1,6 +1,8 @@
 call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-treesitter/nvim-treesitter', {'branch': 'master', 'do': ':TSUpdate'}
+Plug 'MeanderingProgrammer/render-markdown.nvim'
 Plug 'nvim-tree/nvim-tree.lua'
 function! BuildFFF(info)
   lua require("fff.download").download_or_build_binary()
@@ -46,7 +48,7 @@ set number
 set cursorline
 set noswapfile            " disable creating swap file
 set backupdir=~/.cache/nvim " Directory to store backup files.
- 
+
 set smarttab
 set smartindent
 set softtabstop=2
@@ -192,6 +194,23 @@ end
 local function safe_require(name)
   local ok, mod = pcall(require, name)
   return ok and mod or nil
+end
+
+local treesitter_configs = safe_require("nvim-treesitter.configs")
+if treesitter_configs then
+  treesitter_configs.setup({
+    ensure_installed = { "markdown", "markdown_inline", "html", "yaml" },
+    highlight = { enable = true },
+  })
+end
+
+local render_markdown = safe_require("render-markdown")
+if render_markdown then
+  render_markdown.setup({})
+  vim.keymap.set("n", "<leader>m", "<cmd>RenderMarkdown toggle<CR>", {
+    desc = "Toggle Markdown rendering",
+    silent = true,
+  })
 end
 
 local fff = safe_require("fff")

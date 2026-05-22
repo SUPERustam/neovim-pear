@@ -22,26 +22,27 @@ Node packages used by the config. [update.sh](update.sh)
 | Python 3   | Python run shortcut, Python host support, Ruff, ty                 | Runs Python files with `<F7>`, provides Neovim Python integration, and supports Python linting/type-checking tools. | `setup.sh`, `init.vim`                 |
 | `pip`      | `pynvim`, `ruff`, `ty`                                             | Installs and updates Python packages used by Neovim and language tooling.                                           | `setup.sh`                             |
 | `pynvim`   | Neovim Python provider                                             | Lets Python-based Neovim integrations talk to the editor.                                                           | `setup.sh`                             |
-| `uv`       | Optional Python tooling                                            | Not referenced directly by this config today;                                                                       |
+| `uv`       | Optional Python tooling                                            | Useful if you prefer installing Python CLI tools such as `ruff` or `ty` outside `pip`; not referenced directly.     | Not referenced                         |
+| Node.js    | `coc.nvim`, CoC extensions, `eslint`, Prettier                     | Runs CoC, language servers, linting, and formatter tooling.                                                         | `setup.sh`, `init.vim`                 |
+| `npm`      | `neovim` npm package, `eslint`, Prettier                           | Installs global Node packages used by this setup.                                                                   | `setup.sh`                             |
+| `neovim` npm package | Node-based Neovim integrations                          | Provides Node client support for Neovim plugins/tools.                                                              | `setup.sh`                             |
+| `eslint`   | `coc-eslint`                                                       | Provides JavaScript/TypeScript lint diagnostics and fixes.                                                          | `setup.sh`, `init.vim`                 |
+| Prettier   | `conform.nvim`                                                     | Formats JS, TS, CSS, JSON, Markdown, Vue, YAML, HTML, and related filetypes.                                        | `setup.sh`, `init.vim`                 |
+| Treesitter Markdown parsers | `render-markdown.nvim`                                 | Provide Markdown, inline Markdown, HTML, and YAML parsing for in-editor Markdown rendering.                         | `init.vim`                             |
+| `taplo`    | `conform.nvim`                                                     | Formats TOML files when installed and visible to Neovim.                                                            | `init.vim`                             |
+| `clang-format` | `conform.nvim`                                                 | Formats C and C++ files when installed and visible to Neovim.                                                       | `init.vim`                             |
+| `shfmt`    | `conform.nvim`                                                     | Formats shell scripts when installed and visible to Neovim.                                                         | `init.vim`                             |
+| `clangd`   | `coc-clangd`                                                       | C/C++ language server for completion, diagnostics, and navigation.                                                  | `setup.sh`, `init.vim`, `coc-settings.json` |
+| `gcc`      | C `<F7>` run shortcut                                              | Compiles and runs C files.                                                                                          | `init.vim`                             |
+| `g++`      | C++ `<F7>` run shortcut                                            | Compiles and runs C++ files.                                                                                        | `init.vim`                             |
+| `ruff`     | Native LSP and `conform.nvim`                                      | Provides `ruff server`, fixes, import organization, and Python formatting.                                          | `setup.sh`, `init.vim`                 |
+| `ty`       | Native LSP                                                         | Provides Python type checking and language-server features.                                                         | `setup.sh`, `init.vim`                 |
+| `sshfs`    | `remote-sshfs.nvim`                                                | Mounts remote file systems for local editing.                                                                       | `init.vim`                             |
+| `ripgrep` and `fd` | `remote-sshfs.nvim`, `fff.nvim`                             | Supports local and remote search workflows.                                                                         | `init.vim`                             |
+| `tmux`     | `vim-tmux-navigator`                                               | Enables moving between Vim splits and tmux panes with the same navigation keys.                                     | `init.vim`                             |
 
-useful if you prefer installing Python CLI tools such as `ruff` or `ty`
-outside `pip`. | Not referenced |
-| Node.js | `coc.nvim`, CoC extensions, `eslint`, Prettier | Runs CoC, language servers, linting, and formatter tooling. | `setup.sh`, `init.vim` |
-| `npm` | `neovim` npm package, `eslint`, Prettier | Installs global Node packages used by this setup. | `setup.sh` |
-| `neovim` npm package | Node-based Neovim integrations | Provides Node client support for Neovim plugins/tools. | `setup.sh` |
-| `eslint` | `coc-eslint` | Provides JavaScript/TypeScript lint diagnostics and fixes. | `setup.sh`, `init.vim:230` |
-| Prettier | `conform.nvim` | Formats JS, TS, CSS, JSON, Markdown, Vue, YAML, HTML, and related filetypes. | `setup.sh`, `init.vim` |
-| `taplo` | `conform.nvim` | Formats TOML files when installed and visible to Neovim. | `init.vim` |
-| `clang-format` | `conform.nvim` | Formats C and C++ files when installed and visible to Neovim. | `init.vim` |
-| `shfmt` | `conform.nvim` | Formats shell scripts when installed and visible to Neovim. | `init.vim` |
-| `clangd` | `coc-clangd` | C/C++ language server for completion, diagnostics, and navigation. | `setup.sh`, `init.vim:233`, `coc-settings.json` |
-| `gcc` | C `<F7>` run shortcut | Compiles and runs C files. | `init.vim` |
-| `g++` | C++ `<F7>` run shortcut | Compiles and runs C++ files. | `init.vim` |
-| `ruff` | Native LSP and `conform.nvim` | Provides `ruff server`, fixes, import organization, and Python formatting. | `setup.sh`, `init.vim` |
-| `ty` | Native LSP | Provides Python type checking and language-server features. | `setup.sh`, `init.vim` |
-| `sshfs` | `remote-sshfs.nvim` | Mounts remote file systems for local editing. | `init.vim` |
-| `ripgrep` and `fd` | `remote-sshfs.nvim`, `fff.nvim` | Supports local and remote search workflows. | `init.vim` |
-| `tmux` | `vim-tmux-navigator` | Enables moving between Vim splits and tmux panes with the same navigation keys. | `init.vim:5` |
+This config does not install or configure `markdownlint`; Markdown formatting
+continues to use Prettier through Conform.
 
 ## Plugins
 
@@ -52,6 +53,8 @@ outside `pip`. | Not referenced |
 | `neoclide/coc.nvim`                | LSP, completion, diagnostics, code actions, and extensions.      |
 | `nvim-tree/nvim-tree.lua`          | File tree sidebar.                                               |
 | `nvim-tree/nvim-web-devicons`      | File and folder icons for Lua UI plugins.                        |
+| `nvim-treesitter/nvim-treesitter`  | Parser support for Markdown rendering and syntax-aware features. |
+| `MeanderingProgrammer/render-markdown.nvim` | In-editor Markdown rendering for headings, lists, code blocks, links, and related Markdown UI. |
 | `dmtrKovalenko/fff.nvim`           | Rust-backed file search, grep, indexing, and frecency workflows. |
 | `christoomey/vim-tmux-navigator`   | Seamless pane navigation between Vim and tmux.                   |
 | `tpope/vim-commentary`             | Comment and uncomment code with motions.                         |
@@ -213,6 +216,7 @@ Source means:
 | ------------- | ------------- | -------------------------------------------------- | ---------------- |
 | Command       | `:Format`     | Format current buffer through Conform.             | `init.vim`       |
 | Normal        | `,f`          | Format current buffer through Conform.             | `init.vim`       |
+| Normal        | `,m`          | Toggle in-editor Markdown rendering.               | `init.vim`       |
 | Command       | `:Fold`       | Fold current buffer through CoC.                   | `init.vim:339`   |
 | Command       | `:OR`         | Organize imports through Conform's Ruff formatter. | `init.vim`       |
 | Normal/Visual | `gc` + motion | Comment or uncomment using a motion or selection.  | `vim-commentary` |
