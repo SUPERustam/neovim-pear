@@ -1,7 +1,7 @@
 call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'nvim-tree/nvim-web-devicons'
-Plug 'nvim-treesitter/nvim-treesitter', {'branch': 'master', 'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter', {'branch': 'main', 'do': ':TSUpdate'}
 Plug 'MeanderingProgrammer/render-markdown.nvim'
 Plug 'nvim-tree/nvim-tree.lua'
 function! BuildFFF(info)
@@ -196,12 +196,34 @@ local function safe_require(name)
   return ok and mod or nil
 end
 
-local treesitter_configs = safe_require("nvim-treesitter.configs")
-if treesitter_configs then
-  treesitter_configs.setup({
-    ensure_installed = { "markdown", "markdown_inline", "html", "yaml" },
-    highlight = { enable = true },
+local treesitter_languages = { "markdown", "markdown_inline", "html", "yaml" }
+local treesitter = safe_require("nvim-treesitter")
+if treesitter and treesitter.install then
+  treesitter.setup({})
+  local installed_languages = treesitter.get_installed()
+  local missing_languages = {}
+  for _, language in ipairs(treesitter_languages) do
+    if not vim.tbl_contains(installed_languages, language) then
+      table.insert(missing_languages, language)
+    end
+  end
+  if #missing_languages > 0 then
+    treesitter.install(missing_languages)
+  end
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "markdown", "html", "yaml" },
+    callback = function()
+      vim.treesitter.start()
+    end,
   })
+else
+  local treesitter_configs = safe_require("nvim-treesitter.configs")
+  if treesitter_configs then
+    treesitter_configs.setup({
+      ensure_installed = treesitter_languages,
+      highlight = { enable = true },
+    })
+  end
 end
 
 local render_markdown = safe_require("render-markdown")
